@@ -1,0 +1,94 @@
+<?php
+$conn = new mysqli("localhost", "root", "", "matrimonial_db");
+if ($conn->connect_error) die("Connection failed");
+
+// INSERT
+if (isset($_POST['save'])) {
+    $name = $_POST['name'];
+    $age = $_POST['age'];
+    $gender = $_POST['gender'];
+
+    $conn->query("INSERT INTO biodata (name, age, gender) VALUES ('$name','$age','$gender')");
+}
+
+// DELETE
+if (isset($_GET['delete'])) {
+    $id = $_GET['delete'];
+    $conn->query("DELETE FROM biodata WHERE id=$id");
+}
+
+// FETCH FOR EDIT
+$editData = null;
+if (isset($_GET['edit'])) {
+    $id = $_GET['edit'];
+    $result = $conn->query("SELECT * FROM biodata WHERE id=$id");
+    $editData = $result->fetch_assoc();
+}
+
+// UPDATE
+if (isset($_POST['update'])) {
+    $id = $_POST['id'];
+    $name = $_POST['name'];
+    $age = $_POST['age'];
+
+    $conn->query("UPDATE biodata SET name='$name', age='$age' WHERE id=$id");
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Matrimonial CRUD</title>
+</head>
+<body>
+
+<h2>Matrimonial Biodata CRUD</h2>
+
+<form method="POST">
+    <input type="hidden" name="id" value="<?= $editData['id'] ?? '' ?>">
+
+    Name: <input type="text" name="name" value="<?= $editData['name'] ?? '' ?>" required><br><br>
+    Age: <input type="number" name="age" value="<?= $editData['age'] ?? '' ?>" required><br><br>
+
+    Gender:
+    <select name="gender">
+        <option>Male</option>
+        <option>Female</option>
+    </select><br><br>
+
+    <?php if ($editData): ?>
+        <button type="submit" name="update">Update</button>
+    <?php else: ?>
+        <button type="submit" name="save">Save</button>
+    <?php endif; ?>
+</form>
+
+<hr>
+
+<h3>All Records</h3>
+
+<table border="1">
+<tr>
+    <th>ID</th><th>Name</th><th>Age</th><th>Action</th>
+</tr>
+
+<?php
+$result = $conn->query("SELECT * FROM biodata");
+
+while ($row = $result->fetch_assoc()) {
+    echo "<tr>
+        <td>{$row['id']}</td>
+        <td>{$row['name']}</td>
+        <td>{$row['age']}</td>
+        <td>
+            <a href='?edit={$row['id']}'>Edit</a> |
+            <a href='?delete={$row['id']}'>Delete</a>
+        </td>
+    </tr>";
+}
+?>
+
+</table>
+
+</body>
+</html>
