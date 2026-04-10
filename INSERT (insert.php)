@@ -1,0 +1,19 @@
+<?php
+include 'db.php';
+
+$name = $_POST['name'];
+$age = $_POST['age'];
+$gender = $_POST['gender'];
+$email = $_POST['email'];
+$phone = $_POST['phone'];
+$religion = $_POST['religion'];
+$status = $_POST['status'];
+$height = $_POST['height'];
+
+$sql = "INSERT INTO biodata (name, age, gender, email, phone, religion, marital_status, height)
+VALUES ('$name','$age','$gender','$email','$phone','$religion','$status','$height')";
+
+$conn->query($sql);
+
+header("Location: index.php");
+?>
