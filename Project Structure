@@ -1,0 +1,8 @@
+matrimonial-crud/
+│── db.php
+│── index.php        (Read + Create form)
+│── insert.php       (Create)
+│── edit.php         (Update form)
+│── update.php       (Update)
+│── delete.php       (Delete)
+│── README.md
