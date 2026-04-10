@@ -1,0 +1,44 @@
+<?php include 'db.php'; ?>
+
+<h2>Add Biodata</h2>
+<form action="insert.php" method="POST">
+    Name: <input type="text" name="name" required><br>
+    Age: <input type="number" name="age" required><br>
+    Gender:
+    <select name="gender">
+        <option>Male</option>
+        <option>Female</option>
+    </select><br>
+    Email: <input type="text" name="email"><br>
+    Phone: <input type="text" name="phone"><br>
+    Religion: <input type="text" name="religion"><br>
+    Status: <input type="text" name="status"><br>
+    Height: <input type="number" name="height"><br>
+    <button type="submit">Save</button>
+</form>
+
+<hr>
+
+<h2>All Biodata</h2>
+
+<table border="1">
+<tr>
+    <th>ID</th><th>Name</th><th>Age</th><th>Action</th>
+</tr>
+
+<?php
+$result = $conn->query("SELECT * FROM biodata");
+
+while($row = $result->fetch_assoc()){
+    echo "<tr>
+        <td>{$row['id']}</td>
+        <td>{$row['name']}</td>
+        <td>{$row['age']}</td>
+        <td>
+            <a href='edit.php?id={$row['id']}'>Edit</a> |
+            <a href='delete.php?id={$row['id']}'>Delete</a>
+        </td>
+    </tr>";
+}
+?>
+</table>
